@@ -1,0 +1,39 @@
+﻿<Page x:Class="MovieNet.MovieListView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:local="clr-namespace:MovieNet"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800" Background="White"
+      DataContext="{Binding MovieListVM, Source={StaticResource ViewModelLocator}}"
+      Title="MovieListView">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetMoviesCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid Height="60" VerticalAlignment="Top" Background="Silver">
+            <Button Name="btnShowMovieFrom" Content="Add Movie" Command="{Binding ShowMovieFormCommand}" Margin="10,10,711,31"/>
+            <Button Name="btnDeleteMovie" Content="Delete Movie" Command="{Binding DeleteMovieCommand}" Margin="113,10,608,31"/>
+            <Button x:Name="btnShowMovieUpdateForm" Content="Update Movie" Command="{Binding ShowMovieUpdateFormCommand}" Margin="214,10,507,31"/>
+        </Grid>
+        <DataGrid Name="MovieListGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="800" Height="390" Margin="0,60,0,0" ItemsSource="{Binding Movies}">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridColumnHeader}" >
+                    <Setter Property="Background" Value="#0088dc"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,2"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding title}" Width="267" />
+                <DataGridTextColumn Header="Kind" Binding="{Binding kind}" Width="267"/>
+                <DataGridTextColumn Header="synopsis" Binding="{Binding synopsis}" Width="267"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

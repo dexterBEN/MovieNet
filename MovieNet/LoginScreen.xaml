@@ -1,0 +1,24 @@
+﻿<Window x:Class="MovieNet.LoginScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MovieNet"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainVM}"
+        Title="LoginScreen" Height="450" Width="800" Background="#04c582">
+
+    <Border Background="#2e3137" CornerRadius="20" Margin="30">
+        <StackPanel Margin="20">
+            <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+            <Separator></Separator>
+            <Label Content="Username" Foreground="white" HorizontalAlignment="Center"/>
+            <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Name="userLogin" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>
+
+            <Label Content="password" Foreground="white" HorizontalAlignment="Center"/>
+            <TextBox Text="{Binding Path=Password, UpdateSourceTrigger=PropertyChanged}" Name="Password" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>
+
+            <Button Name="btnSubmit" Content="Log in" Background="#545d6a" Command="{Binding MyCommand}" CommandParameter="{Binding ElementName=Password}" Foreground="White" Margin="250,20,250.333,20"/>
+        </StackPanel>
+    </Border>
+</Window>
