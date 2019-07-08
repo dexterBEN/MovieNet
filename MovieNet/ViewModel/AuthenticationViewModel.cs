@@ -8,12 +8,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MovieNet.utils;
 
 namespace MovieNet
 {
     public class AuthenticationViewModel : ViewModelBase
     {
-        UserDao userDao = new UserDao();
         MainWindow currentWindow;
         public RelayCommand<object> LoginCommand { get; }
 
@@ -35,14 +35,12 @@ namespace MovieNet
         {
             LoginCommand = new RelayCommand<object>(LoginCommandExecute, LoginCommandCanExecute);
             currentWindow = ((MainWindow)Application.Current.MainWindow);
-
         }
 
         void LoginCommandExecute(object pwdBox)
         {
             PasswordBox passwordBox = pwdBox as PasswordBox;
-
-            User user = userDao.getUserDao(Login, passwordBox.Password);
+            User user = Singleton.GetInstance.getUser(Login, passwordBox.Password);
 
             if (user != null)
             {

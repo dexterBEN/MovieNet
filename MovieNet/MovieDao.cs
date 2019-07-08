@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace MovieNet
 {
-    class MovieDao
+    public class MovieDao
     {
         public MovieDao()
         {

@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.CommandWpf;
+using System.Windows;
 using MovieNet.Facade;
 using MovieNet.utils;
 
 namespace MovieNet.ViewModel
 {
-    public class MovieCreationViewModel: ViewModelBase
+    public class MovieSheetViewModel: ViewModelBase
     {
         private String _title;
         private String _kind;
         private String _synopsis;
 
         MovieDao movieDao = new MovieDao();
-        ServiceFacade serviceFacade;
         MainWindow currentWindow;
-        public RelayCommand CreateMovieCommand { get; }
+        ServiceFacade serviceFacade;
+        public RelayCommand GetMovieCommand { get; }
 
-        public MovieCreationViewModel()
+        public MovieSheetViewModel()
         {
-            CreateMovieCommand = new RelayCommand(CreateMovieCommandExecute, CreateMovieCommandCanExecute);
-            currentWindow = (MainWindow)Application.Current.MainWindow;
+            GetMovieCommand = new RelayCommand(GetMovieCommandExecute, GetMovieCommandCanExecute);
             serviceFacade = Singleton.GetInstance;
+            currentWindow = (MainWindow)Application.Current.MainWindow;
         }
 
         public String Title
@@ -62,16 +62,21 @@ namespace MovieNet.ViewModel
             }
         }
 
-       void CreateMovieCommandExecute()
+       void GetMovieCommandExecute()
         {
-            //movieDao.createMovieDao(Title, Kind, Synopsis);
+            var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(30);
+            //MessageBox.Show("id du film "+idmovie);
+            var idInt = int.Parse(idmovie.ToString());
+            //var movieSelected = movieDao.getMovie(idInt);
 
-            serviceFacade.createMovie(Title, Kind, Synopsis);
+            var movieSelected = serviceFacade.getMovie(idInt);
 
-            currentWindow.MainFrame.Navigate(new Uri("Views/MovieListView.xaml", UriKind.RelativeOrAbsolute));
+            this.Title = movieSelected.title;
+            this.Kind = movieSelected.kind;
+            this.Synopsis = movieSelected.synopsis;
         }
 
-        bool CreateMovieCommandCanExecute()
+        bool GetMovieCommandCanExecute()
         {
             return true;
         }

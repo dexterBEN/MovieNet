@@ -1,0 +1,42 @@
+﻿<Page x:Class="MovieNet.Views.MovieSheet"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:local="clr-namespace:MovieNet.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800" Background="#04c582"
+      DataContext="{Binding MovieSheetVM, Source={StaticResource ViewModelLocator}}"
+      Title="MovieSheet" Height="550.138" Width="911.956">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding GetMovieCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="379*"/>
+        </Grid.RowDefinitions>
+        <Border Background="#2e3137" CornerRadius="20" Margin="34,34,28,16" Grid.RowSpan="2">
+            <StackPanel Margin="20">
+                <Label Content="Movie with number" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+
+                <Label Content="Title" Foreground="white" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="titleTxt" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Foreground="White" FontSize="18" Margin="20,20,16,20"/>
+
+                <Label Content="Kind" Foreground="white" HorizontalAlignment="Center" Margin="375,0,374.333,0"/>
+                <TextBlock x:Name="kindTxt" Text="{Binding Kind, UpdateSourceTrigger=PropertyChanged}" Foreground="White" FontSize="18" Margin="20,20,18.333,20"/>
+
+                <Label Content="Synopsis" Foreground="white" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="synopsisTxt" Text="{Binding Synopsis, UpdateSourceTrigger=PropertyChanged}" Foreground="White" FontSize="18" Margin="20,20,18.333,20" />
+
+                <Button Name="btnSubmit" Content="Save Change" Background="#545d6a" Command="{Binding UpdateMovieCommand}" Foreground="White" Margin="250,20,250.333,20"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

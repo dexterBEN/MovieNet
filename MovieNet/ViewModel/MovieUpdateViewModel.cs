@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using MovieNet.Facade;
+using MovieNet.utils;
 
 namespace MovieNet.ViewModel
 {
@@ -17,7 +19,7 @@ namespace MovieNet.ViewModel
 
         MovieDao movieDao;
         MainWindow currentWindow;
-        Movie previousMovie;
+        ServiceFacade serviceFacade;
         public RelayCommand UpdateMovieCommand { get; }
         public RelayCommand GetMovieSelectedCommand { get;  }
 
@@ -26,9 +28,9 @@ namespace MovieNet.ViewModel
             movieDao =  new MovieDao();
             UpdateMovieCommand = new RelayCommand(UpdateMovieCommandExecute, UpdateMovieCommandCanExecute);
             currentWindow = (MainWindow)Application.Current.MainWindow;
+            serviceFacade = Singleton.GetInstance;
 
             //previousMovie = movieDao.getMovie((int)currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(35));
-
             //GetMovieSelectedCommand = new RelayCommand(GetMovieSelectedCommandExecute, GetMovieSelectedCommandCanExecute);
         }
 
@@ -66,7 +68,10 @@ namespace MovieNet.ViewModel
         }
 
 
-        /*public Movie GetMovieSelectedCommandExecute()
+        /*
+         * Can be used to fill the form with the previous data of movie:
+         * 
+         * public Movie GetMovieSelectedCommandExecute()
         {
             var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(35);
             var idInt = int.Parse(idmovie.ToString());
@@ -82,41 +87,31 @@ namespace MovieNet.ViewModel
             return true;
         }*/
 
-
-
         void UpdateMovieCommandExecute()
         {
             /* var url =  currentWindow.MainFrame.NavigationService.CurrentSource;
              MessageBox.Show("The movie you want modif have the title:" + Application.Current.Properties.Values.ToString());*/
 
-            //currentWindow.MainFrame.NavigationService.CurrentSource.AbsolutePath.ToString();
-
-
             var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(35);
-            MessageBox.Show("id du film "+idmovie);
             var idInt = int.Parse(idmovie.ToString());
-            var movieSelected = movieDao.getMovie(idInt);
 
+            var movieSelected = serviceFacade.getMovie(idInt);
             movieSelected.title = Title;
             movieSelected.kind = Kind;
             movieSelected.synopsis = Synopsis;
 
+            var movieToUpdate = serviceFacade.updateMovie(movieSelected.Id, movieSelected.title, movieSelected.kind, movieSelected.synopsis);
 
-            var movieToUpdate = movieDao.updateMovieDao(movieSelected.Id, movieSelected.title, movieSelected.kind, movieSelected.synopsis);
-
-            if(movieToUpdate > 0)
+            if (movieToUpdate > 0)
             {
                 currentWindow.MainFrame.Navigate(new Uri("Views/MovieListView.xaml", UriKind.RelativeOrAbsolute));
             }
-
+            //MessageBox.Show("id du film "+idmovie);
         }
 
         bool UpdateMovieCommandCanExecute()
         {
             return true;
         }
-
-
-
     }
 }

@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace MovieNet
 {
-    class UserDao
+    public class UserDao
     {
         //DbContext dbContext = new DbContext(@"Server=.\SQLExpress;AttachDbFilename=|DataDirectory|MyBDD.mdf;Database=MYBDD;");
         //DataModelContainer dmc = new DataModelContainer();
