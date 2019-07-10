@@ -30,7 +30,6 @@ namespace MovieNet.Facade
             {
                 return null;
             }
-
         }
 
         public List<Movie> getMovies()

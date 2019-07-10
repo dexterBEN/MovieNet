@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MovieNet.Facade;
@@ -92,8 +94,19 @@ namespace MovieNet.ViewModel
             /* var url =  currentWindow.MainFrame.NavigationService.CurrentSource;
              MessageBox.Show("The movie you want modif have the title:" + Application.Current.Properties.Values.ToString());*/
 
-            var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(35);
-            var idInt = int.Parse(idmovie.ToString());
+            //currentWindow.MainFrame.CurrentSource.
+
+            /*var url = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
+            var id = url.Substring(url.IndexOf('=')+1);
+           //var url =  currentWindow.MainFrame.CurrentSource;
+
+            MessageBox.Show("the value:"+ url.Substring(35));*/
+
+
+            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
+            var idStr = uri.Substring(uri.IndexOf('=') + 1);
+
+            var idInt = int.Parse(idStr.ToString());
 
             var movieSelected = serviceFacade.getMovie(idInt);
             movieSelected.title = Title;

@@ -67,7 +67,6 @@ namespace MovieNet.ViewModel
             var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(30);
             //MessageBox.Show("id du film "+idmovie);
             var idInt = int.Parse(idmovie.ToString());
-            //var movieSelected = movieDao.getMovie(idInt);
 
             var movieSelected = serviceFacade.getMovie(idInt);
 

@@ -10,11 +10,17 @@ using System.Windows;
 using System.Windows.Navigation;
 using MovieNet.Facade;
 using MovieNet.utils;
+using System.Windows.Data;
+using System.ComponentModel;
+using System.Data;
+using System.Windows.Controls;
 
 namespace MovieNet
 {
    public class MovieListViewModel: ViewModelBase
     {
+        private String _inputSearch;
+
         MovieDao movieDao = new MovieDao();
         MainWindow currentWindow;
         ServiceFacade serviceFacade;
@@ -24,6 +30,7 @@ namespace MovieNet
         public RelayCommand ShowMovieUpdateFormCommand { get; }
         public RelayCommand ShowMovieSheetCommand { get; }
         public RelayCommand DeleteMovieCommand { get; }
+        public RelayCommand SearchMovieCommand { get;  }
         public List<Movie> Movies { get; set; }
 
         public MovieListViewModel()
@@ -33,8 +40,20 @@ namespace MovieNet
             ShowMovieUpdateFormCommand = new RelayCommand(ShowMovieUpdateFormCommandExecute, ShowMovieUpdateFormCanExecute);
             ShowMovieSheetCommand = new RelayCommand(ShowMovieSheetCommandExecute, ShowMovieSheetCommandCanExecute);
             DeleteMovieCommand = new RelayCommand(DeleteMovieCommandExecute, DeleteMovieCommandCanExecute);
+            SearchMovieCommand = new RelayCommand(SearchMovieCommandExecute, SearchMovieCommandCanExecute);
             currentWindow = (MainWindow)Application.Current.MainWindow;
             serviceFacade = Singleton.GetInstance;
+        }
+
+        public String InputSearch
+        {
+            get { return _inputSearch; }
+
+            set
+            {
+                _inputSearch = value;
+                RaisePropertyChanged();
+            }
         }
 
         void GetMoviesCommandExecute()
@@ -104,6 +123,26 @@ namespace MovieNet
         }
 
         bool ShowMovieSheetCommandCanExecute()
+        {
+            return true;
+        }
+
+        void SearchMovieCommandExecute()
+        {
+            //MessageBox.Show("Voici ce que user à taper: "+InputSearch);
+            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
+
+            Movies = serviceFacade.getMovies();
+
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(movieGrid.ItemsSource);
+
+            var searchRes = Movies.Where(movie => movie.title.Contains(InputSearch) || movie.kind.Contains(InputSearch)).ToList();
+
+            movieGrid.ItemsSource = searchRes;
+            //currentWindow.MainFrame.Refresh();
+        }
+
+        bool SearchMovieCommandCanExecute()
         {
             return true;
         }
