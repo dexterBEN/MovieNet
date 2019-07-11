@@ -21,13 +21,11 @@
             <Button Name="btnDeleteMovie" Content="Delete Movie" Command="{Binding DeleteMovieCommand}" Margin="113,10,608,31"/>
             <Button x:Name="btnShowMovieUpdateForm" Content="Update Movie" Command="{Binding ShowMovieUpdateFormCommand}" Margin="221,10,500,31"/>
             <Button x:Name="btnShowMovie" Content="show movie" Command="{Binding ShowMovieSheetCommand}" Margin="331,10,390,31"/>
-            <TextBox Text="{Binding Path=InputSearch, UpdateSourceTrigger=PropertyChanged}" x:Name="inputSearch" Margin="524,10,165,31">
+            <TextBox  Text="{Binding Path=InputSearch, UpdateSourceTrigger=PropertyChanged}" x:Name="inputSearch" Margin="524,10,165,31">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding SearchMovieCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
-            <!--<Button x:Name="btnSearch" Content="Update Movie" Command="{Binding SearchMovie}" Margin="648,10,131,31"></Button>-->
-            
         </Grid>
         <DataGrid Name="MovieListGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="800" Height="390" Margin="0,60,0,0" ItemsSource="{Binding Movies}">
             <DataGrid.Resources>

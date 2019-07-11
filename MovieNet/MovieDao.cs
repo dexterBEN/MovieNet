@@ -40,11 +40,11 @@ namespace MovieNet
             {
                 db.Database.Connection.Open();
 
-                var movieToUpdate = (from m in db.MovieSet
+                var movieToGet = (from m in db.MovieSet
                                     where m.Id == movieId
                                     select m).First();
 
-                return movieToUpdate;
+                return movieToGet;
             }
         }
 

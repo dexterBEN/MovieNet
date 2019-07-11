@@ -64,10 +64,10 @@ namespace MovieNet.ViewModel
 
        void GetMovieCommandExecute()
         {
-            var idmovie = currentWindow.MainFrame.NavigationService.Source.OriginalString.ElementAt(30);
-            //MessageBox.Show("id du film "+idmovie);
-            var idInt = int.Parse(idmovie.ToString());
-
+            
+            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
+            var idStr = uri.Substring(uri.IndexOf('=') + 1);//Get all subtring after char '='
+            var idInt = int.Parse(idStr.ToString());
             var movieSelected = serviceFacade.getMovie(idInt);
 
             this.Title = movieSelected.title;
