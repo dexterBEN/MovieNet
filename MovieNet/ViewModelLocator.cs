@@ -52,6 +52,13 @@ namespace MovieNet
             }
         }
 
+        public ViewModel.MovieSheetViewModel MovieSheetVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.MovieSheetViewModel>();
+            }
+        }
 
         public NavigationService NavigationService
         {
@@ -72,6 +79,7 @@ namespace MovieNet
 
             SimpleIoc.Default.Register<ViewModel.MovieCreationViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieUpdateViewModel>();
+            SimpleIoc.Default.Register<ViewModel.MovieSheetViewModel>();
             //NavigationService navigation = NavigationService.GetNavigationService();
             //navigation.Configure(Locator.HomePage, typeof(HomePage));
             //navigation.Configure(Locator.SecondPage, typeof(SecondPage));
