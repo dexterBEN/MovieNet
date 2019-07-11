@@ -17,19 +17,13 @@ namespace MovieNet
 
         public List<Movie> getMoviesDao()
         {
-
             using (var db = new DataModelContainer())
             {
                 db.Database.Connection.Open();
-
-                //movieList = db.Movies.SqlQuery("Select * From Movies").ToList();
-
+                
                 var movies = (from m in db.MovieSet
                              select m).ToList();
 
-                //movieList = movies;
-
-               // db.Database.Connection.Close();
                 return movies;
             }
         }
@@ -59,14 +53,11 @@ namespace MovieNet
                     title = _title,
                     kind = _kind,
                     synopsis = _synopsis,
-                    
                 };
 
-                //db.MovieSet.Add(myMovie);
+                
                 db.Entry(myMovie).State = System.Data.Entity.EntityState.Added;
                 int res = db.SaveChanges();
-
-                //db.Database.Connection.Close();
 
                 if (res > 0)
                 {
@@ -98,7 +89,6 @@ namespace MovieNet
 
         public int updateMovieDao(int movieId ,string movieTitle, string movieKind, string movieSynopsis)
         {
-
             using(var db = new DataModelContainer())
             {
                 db.Database.Connection.Open();
@@ -122,8 +112,6 @@ namespace MovieNet
                     return res;
                 }
             }
-            
-    
         }
     }
 }
