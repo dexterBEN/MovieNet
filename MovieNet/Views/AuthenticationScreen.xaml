@@ -19,7 +19,7 @@
                 <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                 <Separator></Separator>
                 <Label Content="Username" Foreground="white" HorizontalAlignment="Center"/>
-                <TextBox Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Name="userLogin" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>
+                <TextBox Name="userLogin" Text="{Binding Path=Login, UpdateSourceTrigger=PropertyChanged}" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>
 
                 <Label Content="password" Foreground="white" HorizontalAlignment="Center"/>
                 <PasswordBox Name="PasswordBox" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>

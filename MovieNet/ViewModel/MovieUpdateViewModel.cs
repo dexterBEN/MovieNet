@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using MovieNet.Facade;
 using MovieNet.utils;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace MovieNet.ViewModel
 {
@@ -19,7 +22,6 @@ namespace MovieNet.ViewModel
         private String _kind;
         private String _synopsis;
 
-        MovieDao movieDao;
         MainWindow currentWindow;
         ServiceFacade serviceFacade;
         public RelayCommand UpdateMovieCommand { get; }
@@ -27,7 +29,6 @@ namespace MovieNet.ViewModel
 
         public MovieUpdateViewModel()
         {
-            movieDao =  new MovieDao();
             UpdateMovieCommand = new RelayCommand(UpdateMovieCommandExecute, UpdateMovieCommandCanExecute);
             currentWindow = (MainWindow)Application.Current.MainWindow;
             serviceFacade = Singleton.GetInstance;
@@ -91,30 +92,47 @@ namespace MovieNet.ViewModel
 
         void UpdateMovieCommandExecute()
         {
-            /* var url =  currentWindow.MainFrame.NavigationService.CurrentSource;
-             MessageBox.Show("The movie you want modif have the title:" + Application.Current.Properties.Values.ToString());*/
-
-            //currentWindow.MainFrame.CurrentSource.
-
-            /*var url = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
-            var id = url.Substring(url.IndexOf('=')+1);
-           //var url =  currentWindow.MainFrame.CurrentSource;
-
-            MessageBox.Show("the value:"+ url.Substring(35));*/
+            //NDT for team: i explain these 4 lines in the next meeting
+            var baseUri = new Uri("http://www.contoso.com/");
+            var currentUri = currentWindow.MainFrame.NavigationService.CurrentSource;
+            var finalUri = new Uri(baseUri, currentUri);
+            var movieId =  HttpUtility.ParseQueryString(finalUri.Query).Get("movieId");
 
 
+            /////////////////////////////////////////////////////////////
+            /*
+             * Other mean to get query params
+             * 
+             var baseUri = new Uri("http://www.contoso.com/");
+            var currentUri = currentWindow.MainFrame.NavigationService.CurrentSource;
+            var finalUri = new Uri(baseUri, currentUri);
+
+            var test = Application.Current.Properties.Values;
+            var resList = (from int element in test select element).ToList().FirstOrDefault();
+
+           
+           
+            MessageBox.Show("id du film " + resList);*/
+            //var data = absUri.Query;
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            
+            //Target the current source of the MainFrame, the string looks like "Views/MovieUpdateForm.xaml?key=value"
             var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
-            var idStr = uri.Substring(uri.IndexOf('=') + 1);
 
-            var idInt = int.Parse(idStr.ToString());
+            var idStr = uri.Substring(uri.IndexOf('=') + 1);//Get all element after '=' (not really safe because if you have one more data it can be complicated)
 
-            var movieSelected = serviceFacade.getMovie(idInt);
+            var idInt = int.Parse(idStr.ToString());//The id i get above is a string, so i cast to int
+
+            var movieSelected = serviceFacade.getMovie(idInt);//I  get the corresponding movie in db then change is props
             movieSelected.title = Title;
             movieSelected.kind = Kind;
             movieSelected.synopsis = Synopsis;
 
+            //Call facade, then the facade call the DAO to update the movie 
             var movieToUpdate = serviceFacade.updateMovie(movieSelected.Id, movieSelected.title, movieSelected.kind, movieSelected.synopsis);
 
+            //The update function in the DAO return 1 if the update is successful, so in that case i just redirect to the list
             if (movieToUpdate > 0)
             {
                 currentWindow.MainFrame.Navigate(new Uri("Views/MovieListView.xaml", UriKind.RelativeOrAbsolute));

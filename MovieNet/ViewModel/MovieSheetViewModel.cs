@@ -29,6 +29,7 @@ namespace MovieNet.ViewModel
             currentWindow = (MainWindow)Application.Current.MainWindow;
         }
 
+        //Properties bind with the view
         public String Title
         {
             get { return _title; }
@@ -64,12 +65,12 @@ namespace MovieNet.ViewModel
 
        void GetMovieCommandExecute()
         {
-            
-            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
+            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();//get the url of navigation, looks like: Views/MovieSheet.xaml?key=value
             var idStr = uri.Substring(uri.IndexOf('=') + 1);//Get all subtring after char '='
-            var idInt = int.Parse(idStr.ToString());
-            var movieSelected = serviceFacade.getMovie(idInt);
+            var idInt = int.Parse(idStr.ToString());//The id get above is a string so i cast into int 
+            var movieSelected = serviceFacade.getMovie(idInt);//Then i get the movie i want to display
 
+            //I set the properties of the view with the value i get 
             this.Title = movieSelected.title;
             this.Kind = movieSelected.kind;
             this.Synopsis = movieSelected.synopsis;

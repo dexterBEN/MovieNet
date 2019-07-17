@@ -14,9 +14,18 @@ namespace MovieNet
     
     public partial class Movie
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Movie()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
+    
         public int Id { get; set; }
         public string title { get; set; }
         public string kind { get; set; }
         public string synopsis { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

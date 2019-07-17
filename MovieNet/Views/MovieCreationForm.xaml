@@ -4,9 +4,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MovieNet.Views"
-      mc:Ignorable="d" Background="#04c582"
+      mc:Ignorable="d"
       DataContext="{Binding MovieCreationVM, Source={StaticResource ViewModelLocator}}"
-      Title="MovieCreationForm" Height="550.138" Width="911.956">
+      Title="MovieCreationForm" Height="550.138" Width="911.956" Background="#04c582">
 
     <Grid Margin="0,0,27,35">
         <Grid.RowDefinitions>

@@ -60,6 +60,14 @@ namespace MovieNet
             }
         }
 
+        public ViewModel.MovieCommentFormViewModel MovieCommentFormVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.MovieCommentFormViewModel>();
+            }
+        }
+
         public NavigationService NavigationService
         {
             get
@@ -80,6 +88,7 @@ namespace MovieNet
             SimpleIoc.Default.Register<ViewModel.MovieCreationViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieUpdateViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieSheetViewModel>();
+            SimpleIoc.Default.Register<ViewModel.MovieCommentFormViewModel>();
             //NavigationService navigation = NavigationService.GetNavigationService();
             //navigation.Configure(Locator.HomePage, typeof(HomePage));
             //navigation.Configure(Locator.SecondPage, typeof(SecondPage));

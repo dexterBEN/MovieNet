@@ -1,0 +1,28 @@
+﻿<Page x:Class="MovieNet.Views.MovieCommentForm"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MovieNet.Views"
+      mc:Ignorable="d" 
+      DataContext="{Binding MovieCommentFormVM, Source={StaticResource ViewModelLocator}}"
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MovieCommentForm" Height="550.138" Width="911.956" Background="#04c582">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="379*"/>
+        </Grid.RowDefinitions>
+        <Border Background="#2e3137" CornerRadius="20" Margin="44,40" Grid.RowSpan="2">
+            <StackPanel Margin="20">
+                <Label Content="Write a comment" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+
+                <Label Content="Comment" Foreground="white" HorizontalAlignment="Center"/>
+                <TextBox x:Name="inputComment" Text="{Binding CommentContent, UpdateSourceTrigger=PropertyChanged}" Background="#545d6a" Foreground="White" FontSize="18" Margin="20,20,19,20" Height="77"/>
+                <Button x:Name="btnSubmit" Content="add comment" Background="#545d6a" Command="{Binding CreateMovieCommentCommand}" Foreground="White" Margin="250,20,0,20" HorizontalAlignment="Left" Width="284"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Page>

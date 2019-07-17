@@ -24,5 +24,6 @@ namespace MovieNet.Views
         {
             InitializeComponent();
         }
+       
     }
 }

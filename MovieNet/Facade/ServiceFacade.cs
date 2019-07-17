@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MovieNet.Dao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,16 @@ namespace MovieNet.Facade
     {
         protected UserDao _userDao;
         protected MovieDao _movieDao;
+        protected CommentDao _commentDao;
+
         public List<Movie> Movies = null;
+        public List<Comment> Comments = null;
 
         public ServiceFacade()
         {
             this._userDao = new UserDao();
             this._movieDao = new MovieDao();
+            this._commentDao = new CommentDao();
         }
 
         public User getUser(string login, string password)
@@ -57,6 +62,17 @@ namespace MovieNet.Facade
         public int updateMovie(int movieId, string movieTitle, string movieKind, string movieSynopsis)
         {
             return _movieDao.updateMovieDao(movieId, movieTitle, movieKind, movieSynopsis);
+        }
+
+        public void createComment(int userId, int movieId, string comment)
+        {
+            _commentDao.createComment(userId, movieId, comment);
+        }
+
+        public List<Comment> getMovieComments()
+        {
+           //Comments =  _commentDao.getMovieComments(movie);
+            return null;
         }
     }
 }

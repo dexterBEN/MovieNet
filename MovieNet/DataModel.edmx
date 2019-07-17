@@ -8,6 +8,15 @@
   <EntityContainer Name="DataModelStoreContainer">
     <EntitySet Name="UserSet" EntityType="DataModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="MovieSet" EntityType="DataModel.Store.MovieSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CommentSet" EntityType="DataModel.Store.CommentSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UserComment" Association="DataModel.Store.UserComment">
+      <End Role="User" EntitySet="UserSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
+    <AssociationSet Name="MovieComment" Association="DataModel.Store.MovieComment">
+      <End Role="Movie" EntitySet="MovieSet" />
+      <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
     <Key>
@@ -26,6 +35,39 @@
     <Property Name="kind" Type="nvarchar(max)" Nullable="false" />
     <Property Name="synopsis" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="CommentSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="MovieId" Type="int" Nullable="false" />
+    <Property Name="content" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="UserComment">
+    <End Role="User" Type="DataModel.Store.UserSet" Multiplicity="1" />
+    <End Role="Comment" Type="DataModel.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MovieComment">
+    <End Role="Movie" Type="DataModel.Store.MovieSet" Multiplicity="1" />
+    <End Role="Comment" Type="DataModel.Store.CommentSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="MovieId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -33,7 +75,16 @@
         <EntityContainer Name="DataModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UserSet" EntityType="DataModel.User" />
           <EntitySet Name="MovieSet" EntityType="DataModel.Movie" />
-        </EntityContainer>
+          <EntitySet Name="CommentSet" EntityType="DataModel.Comment" />
+          <AssociationSet Name="UserComment" Association="DataModel.UserComment">
+            <End Role="User" EntitySet="UserSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
+          <AssociationSet Name="MovieComment" Association="DataModel.MovieComment">
+            <End Role="Movie" EntitySet="MovieSet" />
+            <End Role="Comment" EntitySet="CommentSet" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -41,6 +92,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="login" Type="String" Nullable="false" />
           <Property Name="password" Type="String" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="DataModel.UserComment" FromRole="User" ToRole="Comment" />
         </EntityType>
         <EntityType Name="Movie">
           <Key>
@@ -50,8 +102,44 @@
           <Property Name="title" Type="String" Nullable="false" />
           <Property Name="kind" Type="String" Nullable="false" />
           <Property Name="synopsis" Type="String" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="DataModel.MovieComment" FromRole="Movie" ToRole="Comment" />
         </EntityType>
-      </Schema>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="DataModel.UserComment" FromRole="Comment" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Movie" Relationship="DataModel.MovieComment" FromRole="Comment" ToRole="Movie" />
+          <Property Name="MovieId" Type="Int32" Nullable="false" />
+          <Property Name="content" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="UserComment">
+          <End Type="DataModel.User" Role="User" Multiplicity="1" />
+          <End Type="DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MovieComment">
+          <End Type="DataModel.Movie" Role="Movie" Multiplicity="1" />
+          <End Type="DataModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -73,6 +161,16 @@
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="kind" ColumnName="kind" />
           <ScalarProperty Name="synopsis" ColumnName="synopsis" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CommentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.Comment)">
+        <MappingFragment StoreEntitySet="CommentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+          <ScalarProperty Name="content" ColumnName="content" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

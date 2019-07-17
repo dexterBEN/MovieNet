@@ -10,6 +10,7 @@
       DataContext="{Binding MovieSheetVM, Source={StaticResource ViewModelLocator}}"
       Title="MovieSheet" Height="550.138" Width="911.956">
 
+    <!--Each time the event 'Loaded' is triggered i call GetMovieCommand-->
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding GetMovieCommand}" />
