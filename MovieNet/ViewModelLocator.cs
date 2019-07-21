@@ -68,6 +68,14 @@ namespace MovieNet
             }
         }
 
+        public ViewModel.MovieCommentsListViewModel CommentsListVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.MovieCommentsListViewModel>();
+            }
+        }
+
         public NavigationService NavigationService
         {
             get
@@ -89,6 +97,8 @@ namespace MovieNet
             SimpleIoc.Default.Register<ViewModel.MovieUpdateViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieSheetViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieCommentFormViewModel>();
+            SimpleIoc.Default.Register<ViewModel.MovieCommentsListViewModel>();
+
             //NavigationService navigation = NavigationService.GetNavigationService();
             //navigation.Configure(Locator.HomePage, typeof(HomePage));
             //navigation.Configure(Locator.SecondPage, typeof(SecondPage));

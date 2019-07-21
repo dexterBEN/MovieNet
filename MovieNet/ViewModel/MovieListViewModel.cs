@@ -34,9 +34,9 @@ namespace MovieNet
         public RelayCommand SearchMovieCommand { get;  }//Command to filter movie by title and kind(launch when you press 'enter' in the keyboard)
         public RelayCommand DeleteMovieCommand { get; }//Command to delete a Movie
 
-        //Command for the Comment but not working for the moment
+        
         public RelayCommand ShowCommentFormCommand { get; }
-        public RelayCommand ShowMovieCommenstCommand { get; }
+        public RelayCommand ShowMovieCommentsCommand { get; }
 
         public MovieListViewModel()
         {
@@ -50,7 +50,7 @@ namespace MovieNet
             ShowCommentFormCommand = new RelayCommand(ShowCommentFormCommandExecute, ShowCommentFormCommandCanExecute);
             ShowMovieUpdateFormCommand = new RelayCommand(ShowMovieUpdateFormCommandExecute, ShowMovieUpdateFormCanExecute);
 
-            //ShowMovieCommenstCommand = new RelayCommand(ShowMovieCommentsCommandExecute, ShowMovieCommentsCommandCanExecute);
+            ShowMovieCommentsCommand = new RelayCommand(ShowMovieCommentsCommandExecute, ShowMovieCommentsCommandCanExecute);
         }
 
         //Property binded to the input search
@@ -123,7 +123,7 @@ namespace MovieNet
                 UriKind.RelativeOrAbsolute)
             );*/
 
-            //Application.Current.Properties["movieId"] = movieToUpdate.Id;
+            //Application.Current.Properties["movieId"] = selectedMovie.Id;
 
             /*
              * -There i pass the "selectedMovie.Id" in the uri 
@@ -151,8 +151,7 @@ namespace MovieNet
         }
 
         void SearchMovieCommandExecute()
-        {
-            //MessageBox.Show("Voici ce que user à taper: "+InputSearch);
+        { 
             var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
 
             Movies = serviceFacade.getMovies();
@@ -162,11 +161,9 @@ namespace MovieNet
             /*
              * -Search in the List, get from the DB if there are one or more element which the property title or kind corresponding to InputSearch value
              * -Example here: https://stackoverflow.com/questions/16242885/c-sharp-search-query-with-linq
-             * 
-             * NDT:Maybe create the method search in MovieDao(and put the logic of this function in)
              */
 
-            var searchRes = Movies.Where(movie => movie.title.Contains(InputSearch) || movie.kind.Contains(InputSearch)).ToList();
+            var searchRes = serviceFacade.searchMovie(Movies, InputSearch);
 
             //Fill the datagrid with the result of search
             movieGrid.ItemsSource = searchRes;
@@ -179,7 +176,7 @@ namespace MovieNet
             return true;
         }
 
-        //Comment don't work for the moment 
+
         void ShowCommentFormCommandExecute()
         {
             var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
@@ -203,8 +200,14 @@ namespace MovieNet
             selectedMovie = (Movie)movieGrid.SelectedItem;
 
             Application.Current.Properties["movieId"] = selectedMovie.Id;
+            Application.Current.Properties["movieTitle"] = selectedMovie.title;
 
             currentWindow.MainFrame.NavigationService.Navigate(new Uri("Views/MovieCommentList.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        bool ShowMovieCommentsCommandCanExecute()
+        {
+            return true;
         }
 
     }

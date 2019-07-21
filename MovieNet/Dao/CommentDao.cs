@@ -20,9 +20,11 @@ namespace MovieNet.Dao
             {
                 db.Database.Connection.Open();
 
-                var comments = (from c in db.CommentSet
+                var comments = (from c in db.CommentSet.Include("User").Include("Movie")
                                 where c.MovieId == movieId
                                 select c).ToList();
+
+
 
                 return comments;
             }
@@ -44,7 +46,6 @@ namespace MovieNet.Dao
                     content = commentContent,
                     UserId = userId,
                     MovieId = movieId
-                   
                 };
 
                 db.Entry(myComment).State = System.Data.Entity.EntityState.Added;

@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800" Background="White"
       DataContext="{Binding MovieListVM, Source={StaticResource ViewModelLocator}}"
       Height="{Binding SystemParameters.PrimaryScreenHeight}" 
-        Width="{Binding SystemParameters.PrimaryScreenWidth}"
+      Width="{Binding SystemParameters.PrimaryScreenWidth}"
       Title="MovieListView">
 
     <!--For this page, each time the event "Loaded" is triggered i call the "GetMoviesCommand"  -->
@@ -25,7 +25,7 @@
             <Button x:Name="btnShowMovieUpdateForm" Content="Update Movie" Command="{Binding ShowMovieUpdateFormCommand}" Margin="221,10,500,31"/>
             <Button x:Name="btnShowMovie" Content="Show movie" Command="{Binding ShowMovieSheetCommand}" Margin="331,10,390,31"/>
             <Button x:Name="btnShowCommentForm" Content="Add comment" Command="{Binding ShowCommentFormCommand}" Margin="10,34,700,7"/>
-            <Button x:Name="btnShowCommentList" Content="show comments" Command="{Binding ShowCommentsCommand}" Margin="113,34,593,7"/>
+            <Button x:Name="btnShowCommentList" Content="show comments" Command="{Binding ShowMovieCommentsCommand}" Margin="113,34,593,7"/>
             <TextBox  Text="{Binding Path=InputSearch, UpdateSourceTrigger=PropertyChanged}" x:Name="inputSearch" Margin="524,10,165,31">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding SearchMovieCommand}" />

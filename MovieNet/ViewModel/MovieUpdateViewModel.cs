@@ -98,11 +98,12 @@ namespace MovieNet.ViewModel
             var finalUri = new Uri(baseUri, currentUri);
             var movieId =  HttpUtility.ParseQueryString(finalUri.Query).Get("movieId");
 
-
             /////////////////////////////////////////////////////////////
             /*
              * Other mean to get query params
              * 
+             * The method Query on Uri 
+             
              var baseUri = new Uri("http://www.contoso.com/");
             var currentUri = currentWindow.MainFrame.NavigationService.CurrentSource;
             var finalUri = new Uri(baseUri, currentUri);

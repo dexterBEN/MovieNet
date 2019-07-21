@@ -17,7 +17,6 @@ namespace MovieNet.ViewModel
         private String _kind;
         private String _synopsis;
 
-        MovieDao movieDao = new MovieDao();
         MainWindow currentWindow;
         ServiceFacade serviceFacade;
         public RelayCommand GetMovieCommand { get; }

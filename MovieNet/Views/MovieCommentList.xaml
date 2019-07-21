@@ -8,6 +8,7 @@
       xmlns:local="clr-namespace:MovieNet.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" Background="White"
+      DataContext="{Binding CommentsListVM, Source={StaticResource ViewModelLocator}}"
       Title="MovieCommentList">
 
     <i:Interaction.Triggers>
@@ -17,7 +18,8 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <DataGrid Name="MovieCommentsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="800" Height="390" Margin="0,60,0,0" ItemsSource="{Binding Comments}">
+        <TextBlock HorizontalAlignment="Center" Text="{Binding Path=MovieTitle}" Margin="275,0,98,405" Padding="95,15,15,15" Width="427" Height="45"/>
+        <DataGrid x:Name="MovieCommentsGrid" HorizontalAlignment="Left" VerticalAlignment="Top" Width="800" Height="390" Margin="0,60,0,0" ItemsSource="{Binding Source=Comments}">
             <DataGrid.Resources>
                 <Style TargetType="{x:Type DataGridColumnHeader}" >
                     <Setter Property="Background" Value="#0088dc"/>
@@ -26,9 +28,9 @@
                 </Style>
             </DataGrid.Resources>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="author" Binding="{Binding Author}" Width="267" />
-                <DataGridTextColumn Header="movieTitle" Binding="{Binding MovieTitle}" Width="267"/>
-                <DataGridTextColumn Header="content" Binding="{Binding content}" Width="267"/>
+                <DataGridTextColumn Header="author" Binding="{Binding User.login}" Width="400"/>
+                <!--<DataGridTextColumn Header="movieTitle" Binding="{Binding Movie.title}" Width="267"/>-->
+                <DataGridTextColumn Header="content" Binding="{Binding content}" Width="400"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

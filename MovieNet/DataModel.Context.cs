@@ -15,7 +15,7 @@ namespace MovieNet
     
     public partial class DataModelContainer : DbContext
     {
-        //You can see App.config where the DB is located(cnnection string)
+        //You can see App.config where the DB is located(connection string)
         public DataModelContainer()
             : base("name=DataModelContainer")
         {

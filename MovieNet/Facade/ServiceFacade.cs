@@ -69,10 +69,16 @@ namespace MovieNet.Facade
             _commentDao.createComment(userId, movieId, comment);
         }
 
-        public List<Comment> getMovieComments()
+        public List<Movie> searchMovie(List<Movie> movies, string inputSearch)
         {
-           //Comments =  _commentDao.getMovieComments(movie);
-            return null;
+           var searchRes = _movieDao.searchMovie(movies, inputSearch);
+           return searchRes;
+        }
+
+        public List<Comment> getMovieComments(int movieId)
+        {
+            Comments =  _commentDao.getMovieComments(movieId);
+            return Comments;
         }
     }
 }

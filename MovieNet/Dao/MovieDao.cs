@@ -121,5 +121,11 @@ namespace MovieNet
                 }
             }
         }
+
+        public List<Movie> searchMovie(List<Movie> movies, string inputSearch)
+        {
+           var searchRes =  movies.Where(movie => movie.title.Contains(inputSearch) || movie.kind.Contains(inputSearch)).ToList();
+           return searchRes;
+        }
     }
 }
