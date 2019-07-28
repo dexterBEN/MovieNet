@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 07/13/2019 23:55:39
+-- Date Created: 07/27/2019 17:25:19
 -- Generated from EDMX file: C:\Users\benoni.d\source\repos\MovieNet\MovieNet\DataModel.edmx
 -- --------------------------------------------------
 
@@ -23,6 +23,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_MovieComment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CommentSet] DROP CONSTRAINT [FK_MovieComment];
 GO
+IF OBJECT_ID(N'[dbo].[FK_RateUser]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RateSet] DROP CONSTRAINT [FK_RateUser];
+GO
+IF OBJECT_ID(N'[dbo].[FK_RateMovie]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RateSet] DROP CONSTRAINT [FK_RateMovie];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -36,6 +42,9 @@ IF OBJECT_ID(N'[dbo].[MovieSet]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[CommentSet]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CommentSet];
+GO
+IF OBJECT_ID(N'[dbo].[RateSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RateSet];
 GO
 
 -- --------------------------------------------------
@@ -68,6 +77,15 @@ CREATE TABLE [dbo].[CommentSet] (
 );
 GO
 
+-- Creating table 'RateSet'
+CREATE TABLE [dbo].[RateSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [rate] int  NOT NULL,
+    [UserId] int  NOT NULL,
+    [MovieId] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -87,6 +105,12 @@ GO
 -- Creating primary key on [Id] in table 'CommentSet'
 ALTER TABLE [dbo].[CommentSet]
 ADD CONSTRAINT [PK_CommentSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'RateSet'
+ALTER TABLE [dbo].[RateSet]
+ADD CONSTRAINT [PK_RateSet]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -121,6 +145,36 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_MovieComment'
 CREATE INDEX [IX_FK_MovieComment]
 ON [dbo].[CommentSet]
+    ([MovieId]);
+GO
+
+-- Creating foreign key on [UserId] in table 'RateSet'
+ALTER TABLE [dbo].[RateSet]
+ADD CONSTRAINT [FK_RateUser]
+    FOREIGN KEY ([UserId])
+    REFERENCES [dbo].[UserSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RateUser'
+CREATE INDEX [IX_FK_RateUser]
+ON [dbo].[RateSet]
+    ([UserId]);
+GO
+
+-- Creating foreign key on [MovieId] in table 'RateSet'
+ALTER TABLE [dbo].[RateSet]
+ADD CONSTRAINT [FK_RateMovie]
+    FOREIGN KEY ([MovieId])
+    REFERENCES [dbo].[MovieSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RateMovie'
+CREATE INDEX [IX_FK_RateMovie]
+ON [dbo].[RateSet]
     ([MovieId]);
 GO
 

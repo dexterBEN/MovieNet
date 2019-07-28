@@ -15,7 +15,6 @@ namespace MovieNet
     
     public partial class DataModelContainer : DbContext
     {
-        //You can see App.config where the DB is located(connection string)
         public DataModelContainer()
             : base("name=DataModelContainer")
         {
@@ -29,5 +28,6 @@ namespace MovieNet
         public virtual DbSet<User> UserSet { get; set; }
         public virtual DbSet<Movie> MovieSet { get; set; }
         public virtual DbSet<Comment> CommentSet { get; set; }
+        public virtual DbSet<Rate> RateSet { get; set; }
     }
 }

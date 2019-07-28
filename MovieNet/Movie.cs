@@ -18,6 +18,7 @@ namespace MovieNet
         public Movie()
         {
             this.Comments = new HashSet<Comment>();
+            this.Rates = new HashSet<Rate>();
         }
     
         public int Id { get; set; }
@@ -27,5 +28,7 @@ namespace MovieNet
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Rate> Rates { get; set; }
     }
 }

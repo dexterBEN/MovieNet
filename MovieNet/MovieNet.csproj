@@ -73,6 +73,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -94,6 +95,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Comment.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dao\CommentDao.cs" />
+    <Compile Include="Dao\MovieDao.cs" />
+    <Compile Include="Dao\RateDao.cs" />
+    <Compile Include="Dao\UserDao.cs" />
+    <Compile Include="Facade\ServiceFacade.cs" />
+    <Compile Include="Movie.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Rate.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="utils\Singleton.cs" />
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="DataModel.cs">
       <AutoGen>True</AutoGen>
@@ -102,15 +121,21 @@
     </Compile>
     <Compile Include="IPassword.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="Movie.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MovieDao.cs" />
+    <Compile Include="ViewModel\MovieCommentFormViewModel.cs" />
+    <Compile Include="ViewModel\MovieCommentsListViewModel.cs" />
     <Compile Include="ViewModel\MovieCreationViewModel.cs" />
     <Compile Include="ViewModel\MovieListViewModel.cs" />
+    <Compile Include="ViewModel\MovieRateFormViewModel.cs" />
+    <Compile Include="ViewModel\MovieSheetViewModel.cs" />
     <Compile Include="ViewModel\MovieUpdateViewModel.cs" />
     <Compile Include="Views\AuthenticationScreen.xaml.cs">
       <DependentUpon>AuthenticationScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MovieCommentForm.xaml.cs">
+      <DependentUpon>MovieCommentForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MovieCommentList.xaml.cs">
+      <DependentUpon>MovieCommentList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MovieCreationForm.xaml.cs">
       <DependentUpon>MovieCreationForm.xaml</DependentUpon>
@@ -119,19 +144,16 @@
       <DependentUpon>MovieListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MovieNetContext.cs" />
-    <Compile Include="PasswordHelper.cs" />
-    <Compile Include="User.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="UserDao.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="Views\MovieRateForm.xaml.cs">
+      <DependentUpon>MovieRateForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MovieSheet.xaml.cs">
+      <DependentUpon>MovieSheet.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MovieUpdateForm.xaml.cs">
       <DependentUpon>MovieUpdateForm.xaml</DependentUpon>
     </Compile>
-    <Page Include="LoginScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -150,9 +172,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="LoginScreen.xaml.cs">
-      <DependentUpon>LoginScreen.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -161,11 +180,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MovieCommentForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MovieCommentList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MovieCreationForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MovieListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MovieRateForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MovieSheet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,7 +241,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_data\MyBDD.mdf">
@@ -242,9 +279,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Facade\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

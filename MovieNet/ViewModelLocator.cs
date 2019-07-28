@@ -76,6 +76,14 @@ namespace MovieNet
             }
         }
 
+        public ViewModel.MovieRateFormViewModel MovieRateFormVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.MovieRateFormViewModel>();
+            }
+        }
+
         public NavigationService NavigationService
         {
             get
@@ -98,6 +106,7 @@ namespace MovieNet
             SimpleIoc.Default.Register<ViewModel.MovieSheetViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieCommentFormViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieCommentsListViewModel>();
+            SimpleIoc.Default.Register<ViewModel.MovieRateFormViewModel>();
 
             //NavigationService navigation = NavigationService.GetNavigationService();
             //navigation.Configure(Locator.HomePage, typeof(HomePage));

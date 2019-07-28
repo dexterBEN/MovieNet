@@ -12,6 +12,7 @@ namespace MovieNet.Facade
         protected UserDao _userDao;
         protected MovieDao _movieDao;
         protected CommentDao _commentDao;
+        protected RateDao _rateDao;
 
         public List<Movie> Movies = null;
         public List<Comment> Comments = null;
@@ -21,6 +22,7 @@ namespace MovieNet.Facade
             this._userDao = new UserDao();
             this._movieDao = new MovieDao();
             this._commentDao = new CommentDao();
+            this._rateDao = new RateDao();
         }
 
         public User getUser(string login, string password)
@@ -79,6 +81,18 @@ namespace MovieNet.Facade
         {
             Comments =  _commentDao.getMovieComments(movieId);
             return Comments;
+        }
+
+        public void addRateToMovie(int userId, int movieId, int rateValue)
+        {
+            _rateDao.addRate(userId, movieId, rateValue);
+        }
+
+        public int getMovieScore(int movieId)
+        {
+            var movieScore = _rateDao.calculateMovieScore(movieId);
+
+            return movieScore;
         }
     }
 }

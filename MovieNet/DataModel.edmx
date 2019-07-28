@@ -9,6 +9,7 @@
     <EntitySet Name="UserSet" EntityType="DataModel.Store.UserSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="MovieSet" EntityType="DataModel.Store.MovieSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CommentSet" EntityType="DataModel.Store.CommentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="RateSet" EntityType="DataModel.Store.RateSet" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="UserComment" Association="DataModel.Store.UserComment">
       <End Role="User" EntitySet="UserSet" />
       <End Role="Comment" EntitySet="CommentSet" />
@@ -16,6 +17,14 @@
     <AssociationSet Name="MovieComment" Association="DataModel.Store.MovieComment">
       <End Role="Movie" EntitySet="MovieSet" />
       <End Role="Comment" EntitySet="CommentSet" />
+    </AssociationSet>
+    <AssociationSet Name="RateUser" Association="DataModel.Store.RateUser">
+      <End Role="Rate" EntitySet="RateSet" />
+      <End Role="User" EntitySet="UserSet" />
+    </AssociationSet>
+    <AssociationSet Name="RateMovie" Association="DataModel.Store.RateMovie">
+      <End Role="Rate" EntitySet="RateSet" />
+      <End Role="Movie" EntitySet="MovieSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserSet">
@@ -44,6 +53,15 @@
     <Property Name="MovieId" Type="int" Nullable="false" />
     <Property Name="content" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="RateSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="rate" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="MovieId" Type="int" Nullable="false" />
+  </EntityType>
   <Association Name="UserComment">
     <End Role="User" Type="DataModel.Store.UserSet" Multiplicity="1" />
     <End Role="Comment" Type="DataModel.Store.CommentSet" Multiplicity="*" />
@@ -68,6 +86,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="RateUser">
+    <End Role="Rate" Type="DataModel.Store.RateSet" Multiplicity="*" />
+    <End Role="User" Type="DataModel.Store.UserSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rate">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="RateMovie">
+    <End Role="Rate" Type="DataModel.Store.RateSet" Multiplicity="*" />
+    <End Role="Movie" Type="DataModel.Store.MovieSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Rate">
+        <PropertyRef Name="MovieId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -84,6 +126,15 @@
             <End Role="Movie" EntitySet="MovieSet" />
             <End Role="Comment" EntitySet="CommentSet" />
           </AssociationSet>
+          <EntitySet Name="RateSet" EntityType="DataModel.Rate" />
+          <AssociationSet Name="RateUser" Association="DataModel.RateUser">
+            <End Role="Rate" EntitySet="RateSet" />
+            <End Role="User" EntitySet="UserSet" />
+          </AssociationSet>
+          <AssociationSet Name="RateMovie" Association="DataModel.RateMovie">
+            <End Role="Rate" EntitySet="RateSet" />
+            <End Role="Movie" EntitySet="MovieSet" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="User">
           <Key>
@@ -93,6 +144,7 @@
           <Property Name="login" Type="String" Nullable="false" />
           <Property Name="password" Type="String" Nullable="false" />
           <NavigationProperty Name="Comments" Relationship="DataModel.UserComment" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Rates" Relationship="DataModel.RateUser" FromRole="User" ToRole="Rate" />
         </EntityType>
         <EntityType Name="Movie">
           <Key>
@@ -103,6 +155,7 @@
           <Property Name="kind" Type="String" Nullable="false" />
           <Property Name="synopsis" Type="String" Nullable="false" />
           <NavigationProperty Name="Comments" Relationship="DataModel.MovieComment" FromRole="Movie" ToRole="Comment" />
+          <NavigationProperty Name="Rates" Relationship="DataModel.RateMovie" FromRole="Movie" ToRole="Rate" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -139,6 +192,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Rate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="rate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="DataModel.RateUser" FromRole="Rate" ToRole="User" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Movie" Relationship="DataModel.RateMovie" FromRole="Rate" ToRole="Movie" />
+          <Property Name="MovieId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RateUser">
+          <End Type="DataModel.Rate" Role="Rate" Multiplicity="*" />
+          <End Type="DataModel.User" Role="User" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rate">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="RateMovie">
+          <End Type="DataModel.Rate" Role="Rate" Multiplicity="*" />
+          <End Type="DataModel.Movie" Role="Movie" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rate">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -171,6 +259,16 @@
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="MovieId" ColumnName="MovieId" />
           <ScalarProperty Name="content" ColumnName="content" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RateSet">
+      <EntityTypeMapping TypeName="IsTypeOf(DataModel.Rate)">
+        <MappingFragment StoreEntitySet="RateSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="MovieId" ColumnName="MovieId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

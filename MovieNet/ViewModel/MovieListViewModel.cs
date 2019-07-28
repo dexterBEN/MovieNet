@@ -27,21 +27,22 @@ namespace MovieNet
         public List<Movie> Movies { get; set; }
 
         
-        public RelayCommand GetMoviesCommand { get; }//Get all movie in database
-        public RelayCommand ShowMovieFormCommand { get; }//Command to navigate to movie creation form
-        public RelayCommand ShowMovieUpdateFormCommand { get; }//Command to navigate to movie update form
-        public RelayCommand ShowMovieSheetCommand { get; }//Command to show the sheet of one movie
-        public RelayCommand SearchMovieCommand { get;  }//Command to filter movie by title and kind(launch when you press 'enter' in the keyboard)
-        public RelayCommand DeleteMovieCommand { get; }//Command to delete a Movie
+        public RelayCommand GetMoviesCommand { get; }
+        public RelayCommand ShowMovieFormCommand { get; }
+        public RelayCommand ShowMovieUpdateFormCommand { get; }
+        public RelayCommand ShowMovieSheetCommand { get; }
+        public RelayCommand SearchMovieCommand { get;  }
+        public RelayCommand DeleteMovieCommand { get; }
 
-        
         public RelayCommand ShowCommentFormCommand { get; }
         public RelayCommand ShowMovieCommentsCommand { get; }
 
+        public RelayCommand ShowMovieRateFormCommand { get; }
+
         public MovieListViewModel()
         {
-            serviceFacade = Singleton.GetInstance;//Allow to get a unique instance of the facade
-            currentWindow = (MainWindow)Application.Current.MainWindow;//Get the current window running
+            serviceFacade = Singleton.GetInstance;
+            currentWindow = (MainWindow)Application.Current.MainWindow;
             GetMoviesCommand = new RelayCommand(GetMoviesCommandExecute, GetMoviesCommandCanExecute);
             DeleteMovieCommand = new RelayCommand(DeleteMovieCommandExecute, DeleteMovieCommandCanExecute);
             SearchMovieCommand = new RelayCommand(SearchMovieCommandExecute, SearchMovieCommandCanExecute);
@@ -51,9 +52,9 @@ namespace MovieNet
             ShowMovieUpdateFormCommand = new RelayCommand(ShowMovieUpdateFormCommandExecute, ShowMovieUpdateFormCanExecute);
 
             ShowMovieCommentsCommand = new RelayCommand(ShowMovieCommentsCommandExecute, ShowMovieCommentsCommandCanExecute);
+            ShowMovieRateFormCommand = new RelayCommand(ShowMovieRateFormCommandExecute, ShowMovieRateFormCommandCanExecute);
         }
 
-        //Property binded to the input search
         public String InputSearch
         {
             get { return _inputSearch; }
@@ -67,20 +68,12 @@ namespace MovieNet
 
         void GetMoviesCommandExecute()
         {
-            Movies = serviceFacade.getMovies();//Get all existing movie in DB
-
-            /*
-             * -Target the datagrid with Name="MovieListGrid" (look in Views/MovieListView.xaml)
-             * -The attribut "ItemsSource" is there to specify which property will fill the DataGrid
-             * -There the property is "Movies" a List i fill up my List with the movie in DB
-             * -I used the "Movies" property to fill the MovieListGrid
-             */
+            Movies = serviceFacade.getMovies();
             ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid.ItemsSource = Movies;
         }
 
         bool GetMoviesCommandCanExecute()
         {
-            //The "GetMoviesCommandExecute" can be launch only if the source of the current frame is (Views/MovieListView.xaml)
             return currentWindow.MainFrame.Source.Equals("Views/MovieListView.xaml");
         }
 
@@ -101,11 +94,11 @@ namespace MovieNet
         
         void DeleteMovieCommandExecute()
         {
-            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;//Target the movie grid
-            selectedMovie = (Movie)movieGrid.SelectedItem;//Get the element is selected by the user
+            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
+            selectedMovie = (Movie)movieGrid.SelectedItem;
 
-            serviceFacade.deleteMovie(selectedMovie.Id);//Delete the movie in DB
-            currentWindow.MainFrame.Refresh();//Reload the current frame 
+            serviceFacade.deleteMovie(selectedMovie.Id);
+            currentWindow.MainFrame.Refresh();
         }
 
         bool DeleteMovieCommandCanExecute()
@@ -115,20 +108,12 @@ namespace MovieNet
 
         void ShowMovieUpdateFormCommandExecute()
         {
-            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;//Target the movie grid
-            selectedMovie = (Movie)movieGrid.SelectedItem;//Get the element is selected by the user
-
-            /*currentWindow.MainFrame.Navigate(
-                new Uri("Views/MovieUpdateForm.xaml?movieTitle="+movieToUpdate.title+"&movieKind="+movieToUpdate.kind+"&movieSynopsis="+movieToUpdate.synopsis,
-                UriKind.RelativeOrAbsolute)
-            );*/
+            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
+            selectedMovie = (Movie)movieGrid.SelectedItem;
 
             //Application.Current.Properties["movieId"] = selectedMovie.Id;
 
-            /*
-             * -There i pass the "selectedMovie.Id" in the uri 
-             * -You can see how i get this data in ViewModel/MovieUpdateViewModel.cs
-             */
+         
             currentWindow.MainFrame.NavigationService.Navigate(new Uri("Views/MovieUpdateForm.xaml?movieId="+ selectedMovie.Id,UriKind.RelativeOrAbsolute));
         }
 
@@ -142,6 +127,8 @@ namespace MovieNet
             var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;//Target the entire datagrid
             selectedMovie = (Movie)movieGrid.SelectedItem;//get the selected row and cast it to a Movie entity
 
+            Application.Current.Properties["movieId"] = selectedMovie.Id;
+
             currentWindow.MainFrame.NavigationService.Navigate(new Uri("Views/MovieSheet.xaml?movieId="+ selectedMovie.Id, UriKind.RelativeOrAbsolute));
         }
 
@@ -153,22 +140,10 @@ namespace MovieNet
         void SearchMovieCommandExecute()
         { 
             var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
-
             Movies = serviceFacade.getMovies();
 
-            //ICollectionView collectionView = CollectionViewSource.GetDefaultView(movieGrid.ItemsSource);
-
-            /*
-             * -Search in the List, get from the DB if there are one or more element which the property title or kind corresponding to InputSearch value
-             * -Example here: https://stackoverflow.com/questions/16242885/c-sharp-search-query-with-linq
-             */
-
             var searchRes = serviceFacade.searchMovie(Movies, InputSearch);
-
-            //Fill the datagrid with the result of search
             movieGrid.ItemsSource = searchRes;
-
-            //currentWindow.MainFrame.Refresh();
         }
 
         bool SearchMovieCommandCanExecute()
@@ -206,6 +181,22 @@ namespace MovieNet
         }
 
         bool ShowMovieCommentsCommandCanExecute()
+        {
+            return true;
+        }
+
+       void ShowMovieRateFormCommandExecute()
+       {
+            var movieGrid = ((MovieListView)currentWindow.MainFrame.Content).MovieListGrid;
+            selectedMovie = (Movie)movieGrid.SelectedItem;
+
+            Application.Current.Properties["movieId"] = selectedMovie.Id;
+            var userId = Application.Current.Properties["userId"];
+
+            currentWindow.MainFrame.NavigationService.Navigate(new Uri("Views/MovieRateForm.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        bool ShowMovieRateFormCommandCanExecute()
         {
             return true;
         }

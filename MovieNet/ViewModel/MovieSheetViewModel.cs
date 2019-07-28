@@ -16,19 +16,21 @@ namespace MovieNet.ViewModel
         private String _title;
         private String _kind;
         private String _synopsis;
+        private int _scoreValue;
 
         MainWindow currentWindow;
         ServiceFacade serviceFacade;
         public RelayCommand GetMovieCommand { get; }
+        public RelayCommand GetMovieScoreCommand { get; }
 
         public MovieSheetViewModel()
         {
             GetMovieCommand = new RelayCommand(GetMovieCommandExecute, GetMovieCommandCanExecute);
+            GetMovieScoreCommand = new RelayCommand(GetMovieScoreCommandExecute, GetMovieScoreCommandCanExecute);
             serviceFacade = Singleton.GetInstance;
             currentWindow = (MainWindow)Application.Current.MainWindow;
         }
 
-        //Properties bind with the view
         public String Title
         {
             get { return _title; }
@@ -62,20 +64,44 @@ namespace MovieNet.ViewModel
             }
         }
 
+        public int ScoreValue
+        {
+            get { return _scoreValue; }
+
+            set
+            {
+                _scoreValue = value;
+                RaisePropertyChanged();
+            }
+        }
+
        void GetMovieCommandExecute()
         {
-            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();//get the url of navigation, looks like: Views/MovieSheet.xaml?key=value
-            var idStr = uri.Substring(uri.IndexOf('=') + 1);//Get all subtring after char '='
-            var idInt = int.Parse(idStr.ToString());//The id get above is a string so i cast into int 
-            var movieSelected = serviceFacade.getMovie(idInt);//Then i get the movie i want to display
+            var uri = currentWindow.MainFrame.NavigationService.CurrentSource.ToString();
+            var idStr = uri.Substring(uri.IndexOf('=') + 1);
+            var idInt = int.Parse(idStr.ToString());
+            var movieSelected = serviceFacade.getMovie(idInt);
 
-            //I set the properties of the view with the value i get 
+            
             this.Title = movieSelected.title;
             this.Kind = movieSelected.kind;
             this.Synopsis = movieSelected.synopsis;
         }
 
         bool GetMovieCommandCanExecute()
+        {
+            return true;
+        }
+
+        void GetMovieScoreCommandExecute()
+        {
+            var movieId = (int)Application.Current.Properties["movieId"];
+            var movieScore = serviceFacade.getMovieScore(movieId);
+
+            this.ScoreValue = movieScore;
+        }
+
+        bool GetMovieScoreCommandCanExecute()
         {
             return true;
         }

@@ -26,6 +26,7 @@
             <Button x:Name="btnShowMovie" Content="Show movie" Command="{Binding ShowMovieSheetCommand}" Margin="331,10,390,31"/>
             <Button x:Name="btnShowCommentForm" Content="Add comment" Command="{Binding ShowCommentFormCommand}" Margin="10,34,700,7"/>
             <Button x:Name="btnShowCommentList" Content="show comments" Command="{Binding ShowMovieCommentsCommand}" Margin="113,34,593,7"/>
+            <Button x:Name="btnShowRateForm" Content="add rate" Command="{Binding ShowMovieRateFormCommand}" Margin="221,34,500,7"/>
             <TextBox  Text="{Binding Path=InputSearch, UpdateSourceTrigger=PropertyChanged}" x:Name="inputSearch" Margin="524,10,165,31">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding SearchMovieCommand}" />
