@@ -25,6 +25,7 @@
                 <PasswordBox Name="PasswordBox" Background="#545d6a" Foreground="White" FontSize="18" Margin="20"/>
 
                 <Button Name="btnSubmit" Content="Log in" Background="#545d6a" Command="{Binding LoginCommand}"  CommandParameter="{Binding ElementName=PasswordBox}" Foreground="White" Margin="250,20,250.333,20"/>
+                <Button x:Name="btnCreate" Content="Create account" Background="#545d6a" Command="{Binding ShowUserFormCommand}" Foreground="White" Margin="250,20,250.333,20"/>
             </StackPanel>
         </Border>
     </Grid>

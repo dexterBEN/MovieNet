@@ -18,6 +18,8 @@ namespace MovieNet
         MainWindow currentWindow;
         public RelayCommand<object> LoginCommand { get; }
 
+        public RelayCommand ShowUserFormCommand { get; }
+
         private string _login;
         public String Login
         {
@@ -28,15 +30,15 @@ namespace MovieNet
                 _login = value;
                 RaisePropertyChanged();
                 LoginCommand.RaiseCanExecuteChanged();
-               
             }
         }
 
         public AuthenticationViewModel()
         {
            
-            LoginCommand = new RelayCommand<object>(LoginCommandExecute, LoginCommandCanExecute);
             currentWindow = ((MainWindow)Application.Current.MainWindow);
+            LoginCommand = new RelayCommand<object>(LoginCommandExecute, LoginCommandCanExecute);
+            ShowUserFormCommand = new RelayCommand(ShowUserFormCommandExecute, ShowUserFormCommandCanExecute);
         }
 
 
@@ -65,6 +67,18 @@ namespace MovieNet
         {
             PasswordBox passwordBox = arg as PasswordBox;
             return !(String.IsNullOrEmpty(Login));
+        }
+
+
+        void ShowUserFormCommandExecute()
+        {
+            MessageBox.Show("This is art");
+            currentWindow.MainFrame.Navigate(new Uri("Views/UserCreationForm.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        bool ShowUserFormCommandCanExecute()
+        {
+            return true;
         }
 
     }

@@ -128,6 +128,8 @@
     <Compile Include="ViewModel\MovieRateFormViewModel.cs" />
     <Compile Include="ViewModel\MovieSheetViewModel.cs" />
     <Compile Include="ViewModel\MovieUpdateViewModel.cs" />
+    <Compile Include="ViewModel\UserCreationViewModel.cs" />
+    <Compile Include="ViewModel\UserSettingsViewModel.cs" />
     <Compile Include="Views\AuthenticationScreen.xaml.cs">
       <DependentUpon>AuthenticationScreen.xaml</DependentUpon>
     </Compile>
@@ -153,6 +155,12 @@
     </Compile>
     <Compile Include="Views\MovieUpdateForm.xaml.cs">
       <DependentUpon>MovieUpdateForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserCreationForm.xaml.cs">
+      <DependentUpon>UserCreationForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserSettings.xaml.cs">
+      <DependentUpon>UserSettings.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +213,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MovieUpdateForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserCreationForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

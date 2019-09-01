@@ -43,6 +43,37 @@ namespace MovieNet.Dao
             }
         }
 
+        public List<Rate> getRatesDao(int userID)
+        {
+            using (var db = new DataModelContainer())
+            {
+                db.Database.Connection.Open();
+
+                var rates = (from r in db.RateSet
+                             where r.UserId == userID
+                             select r).ToList();
+                return rates;
+            }
+        }
+
+        public bool deleteRatesByUser(int userId)
+        {
+            using (var db = new DataModelContainer())
+            {
+                db.Database.Connection.Open();
+
+                var rates = (from r in db.RateSet
+                             where r.UserId == userId
+                             select r).ToList();
+                if (rates.Count < 1)
+                    return false;
+                rates.ForEach(delegate (Rate rate) {
+                    db.Entry(rate).State = System.Data.Entity.EntityState.Deleted;
+                });
+                return db.SaveChanges() != 0;
+            }
+        }
+
         public int calculateMovieScore(int movieId)
         {
             using (var db = new DataModelContainer())

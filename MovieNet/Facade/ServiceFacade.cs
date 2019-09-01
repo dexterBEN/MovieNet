@@ -27,7 +27,7 @@ namespace MovieNet.Facade
 
         public User getUser(string login, string password)
         {
-            User user = _userDao.getUserDao(login, password);
+            User user = _userDao.loginDao(login, password);
 
             if(user != null)
             {
@@ -37,6 +37,48 @@ namespace MovieNet.Facade
             {
                 return null;
             }
+        }
+
+        public User getUser(int userID)
+        {
+            User user = _userDao.getUserDao(userID);
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public User createUser(String login, String password)
+        {
+            User userCreated = _userDao.createUserDao(login, password);
+
+            if(userCreated != null)
+            {
+                return userCreated;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool deleteUser(User userToDelete)
+        {
+            if (!_userDao.isUserExists(userToDelete.Id))
+                return false;
+            _rateDao.deleteRatesByUser(userToDelete.Id);
+            _commentDao.deleteCommentsByUser(userToDelete.Id);
+            return _userDao.deleteUserDao(userToDelete);
+        }
+
+        public bool updateUser(int userId, String Login, String Password)
+        {
+           return  _userDao.updateUserDao(userId, Login, Password);
         }
 
         public List<Movie> getMovies()

@@ -28,11 +28,28 @@ namespace MovieNet
             }
         }
 
+
         public MovieListViewModel MovieListVM
         {
             get
             {
                 return ServiceLocator.Current.GetInstance<MovieListViewModel>();
+            }
+        }
+
+        public ViewModel.UserSettingsViewModel UserUpdateVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.UserSettingsViewModel>();
+            }
+        }
+
+        public ViewModel.UserCreationViewModel UserCreationVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ViewModel.UserCreationViewModel>();
             }
         }
 
@@ -107,6 +124,8 @@ namespace MovieNet
             SimpleIoc.Default.Register<ViewModel.MovieCommentFormViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieCommentsListViewModel>();
             SimpleIoc.Default.Register<ViewModel.MovieRateFormViewModel>();
+            SimpleIoc.Default.Register<ViewModel.UserSettingsViewModel>();
+            SimpleIoc.Default.Register<ViewModel.UserCreationViewModel>();
 
             //NavigationService navigation = NavigationService.GetNavigationService();
             //navigation.Configure(Locator.HomePage, typeof(HomePage));

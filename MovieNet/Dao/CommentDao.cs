@@ -35,6 +35,25 @@ namespace MovieNet.Dao
             return null;
         }
 
+
+        public bool deleteCommentsByUser(int userId)
+        {
+            using (var db = new DataModelContainer())
+            {
+                db.Database.Connection.Open();
+
+                var comments = (from r in db.CommentSet
+                             where r.UserId == userId
+                             select r).ToList();
+                if (comments.Count < 1)
+                    return false;
+                comments.ForEach(delegate (Comment comment) {
+                    db.Entry(comment).State = System.Data.Entity.EntityState.Deleted;
+                });
+                return db.SaveChanges() != 0;
+            }
+        }
+
         public int createComment(int userId, int movieId, string commentContent)
         {
             using (var db = new DataModelContainer())

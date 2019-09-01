@@ -26,7 +26,7 @@ namespace MovieNet
         Movie selectedMovie;
         public List<Movie> Movies { get; set; }
 
-        
+        public RelayCommand ShowUserProfileCommand { get; }
         public RelayCommand GetMoviesCommand { get; }
         public RelayCommand ShowMovieFormCommand { get; }
         public RelayCommand ShowMovieUpdateFormCommand { get; }
@@ -43,11 +43,13 @@ namespace MovieNet
         {
             serviceFacade = Singleton.GetInstance;
             currentWindow = (MainWindow)Application.Current.MainWindow;
+
             GetMoviesCommand = new RelayCommand(GetMoviesCommandExecute, GetMoviesCommandCanExecute);
             DeleteMovieCommand = new RelayCommand(DeleteMovieCommandExecute, DeleteMovieCommandCanExecute);
             SearchMovieCommand = new RelayCommand(SearchMovieCommandExecute, SearchMovieCommandCanExecute);
             ShowMovieFormCommand = new RelayCommand(ShowMovieFormCommandExecute, ShowMovieFormCommandCanExecute);
             ShowMovieSheetCommand = new RelayCommand(ShowMovieSheetCommandExecute, ShowMovieSheetCommandCanExecute);
+            ShowUserProfileCommand = new RelayCommand(ShowUserProfileCommandExecute, ShowUserProfileCommandCanExecute);
             ShowCommentFormCommand = new RelayCommand(ShowCommentFormCommandExecute, ShowCommentFormCommandCanExecute);
             ShowMovieUpdateFormCommand = new RelayCommand(ShowMovieUpdateFormCommandExecute, ShowMovieUpdateFormCanExecute);
 
@@ -64,6 +66,17 @@ namespace MovieNet
                 _inputSearch = value;
                 RaisePropertyChanged();
             }
+        }
+
+        void ShowUserProfileCommandExecute()
+        {
+            var userId = Application.Current.Properties["userId"];
+            currentWindow.MainFrame.Navigate(new Uri("Views/UserSettings.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        bool ShowUserProfileCommandCanExecute()
+        {
+            return true;
         }
 
         void GetMoviesCommandExecute()
